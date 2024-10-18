@@ -5,6 +5,9 @@
 # imports
 import csv
 import time
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 
 # constants
 FILENAME = 'data_2SATcnf_jrelling.csv'
@@ -114,6 +117,34 @@ def simplify(problem: list[list], literal: int | None, value: bool):
     
     return simplified
 
+def generate_plot():
+    data = pd.read_csv(OUTPUT)
+
+    x = data['# variables']
+    y = data['time (s)']
+    sat = data['satisfiability']
+
+    plt.figure(figsize=(10, 6))
+
+    satisfiable = data[sat == 'S']
+    plt.scatter(satisfiable['# variables'], satisfiable['time (s)'], color='green', label='Satisfiable')
+    
+    unsatisfiable = data[sat == 'U']
+    plt.scatter(satisfiable['# variables'], satisfiable['time (s)'], color='red', label='Unsatisfiable')
+    
+    coefficients = np.polyfit(x, y, 1)  # Linear fit (1st degree polynomial)
+    polynomial = np.poly1d(coefficients)
+    best_fit_line = polynomial(x)
+
+    plt.plot(x, best_fit_line, color='blue', linestyle='--')
+
+    plt.xlabel('Number of Variables')
+    plt.ylabel('Time (s)')
+    plt.title('Scatter Plot of Satisfiable vs Unsatisfiable')
+    plt.legend()
+    
+    plt.savefig('./plot_jrelling.png', format='png')
+
 
 def main():
     ''' get cnf problems from file '''
@@ -163,6 +194,8 @@ def main():
         writer.writerows(answers)
 
     print(f'file {OUTPUT} created successfully')
+
+    generate_plot()
 
 
 if __name__ == '__main__':
