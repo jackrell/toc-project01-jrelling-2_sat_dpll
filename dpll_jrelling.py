@@ -140,6 +140,11 @@ def generate_plot():
 
     plt.xlabel('Number of Variables')
     plt.ylabel('Time (s)')
+    # Dynamically set y-axis limits to better show variability
+    y_min = min(y) - 0.05 * (max(y) - min(y))  # Padding for a little margin below
+    y_max = max(y) + 0.05 * (max(y) - min(y))  # Padding for a little margin above
+    plt.ylim(y_min, y_max)
+    
     plt.title('Scatter Plot of Satisfiable vs Unsatisfiable')
     plt.legend()
     
