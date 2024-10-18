@@ -130,7 +130,7 @@ def generate_plot():
     plt.scatter(satisfiable['# variables'], satisfiable['time (s)'], color='green', label='Satisfiable')
     
     unsatisfiable = data[sat == 'U']
-    plt.scatter(satisfiable['# variables'], satisfiable['time (s)'], color='red', label='Unsatisfiable')
+    plt.scatter(unsatisfiable['# variables'], unsatisfiable['time (s)'], color='red', label='Unsatisfiable')
     
     coefficients = np.polyfit(x, y, 1)  # Linear fit (1st degree polynomial)
     polynomial = np.poly1d(coefficients)
